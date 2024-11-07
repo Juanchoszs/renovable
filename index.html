@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Energías Renovables en Colombia</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.16/tailwind.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .gradient-bg {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    }
+    .card-hover {
+      transition: transform 0.2s ease-in-out;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50">
+  <header class="gradient-bg py-6 shadow-lg">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between">
+        <a href="#" class="text-white text-2xl font-bold flex items-center space-x-2">
+          <i data-lucide="zap" class="h-8 w-8"></i>
+          <span>EcoEnergía</span>
+        </a>
+        <nav class="hidden md:block">
+          <ul class="flex space-x-8">
+            <li><a href="#" class="text-white hover:text-blue-100 flex items-center space-x-1">
+              <i data-lucide="home" class="h-4 w-4"></i>
+              <span>Inicio</span>
+            </a></li>
+            <li><a href="#" class="text-white hover:text-blue-100 flex items-center space-x-1">
+              <i data-lucide="layout-grid" class="h-4 w-4"></i>
+              <span>Proyectos</span>
+            </a></li>
+            <li><a href="#" class="text-white hover:text-blue-100 flex items-center space-x-1">
+              <i data-lucide="leaf" class="h-4 w-4"></i>
+              <span>Sostenibilidad</span>
+            </a></li>
+            <li><a href="#" class="text-white hover:text-blue-100 flex items-center space-x-1">
+              <i data-lucide="users" class="h-4 w-4"></i>
+              <span>Nosotros</span>
+            </a></li>
+            <li><a href="#" class="text-white hover:text-blue-100 flex items-center space-x-1">
+              <i data-lucide="mail" class="h-4 w-4"></i>
+              <span>Contacto</span>
+            </a></li>
+          </ul>
+        </nav>
+        <button class="md:hidden text-white">
+          <i data-lucide="menu" class="h-6 w-6"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Proyectos en Colombia</h1>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Impulsando el futuro sostenible de Colombia a través de proyectos innovadores de energía renovable.</p>
+        </div>
+        <div id="capacity-map" class="bg-white rounded-lg shadow-lg p-6"></div>
+      </div>
+    </section>
+
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Ahorro Energético</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Seguimiento del impacto de nuestras energías renovables en Colombia.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-lg p-6">
+          <canvas id="energySavingsChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Sobre Nosotros</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Comprometidos con la transformación energética de Colombia.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-white rounded-lg shadow-lg p-8 card-hover">
+            <i data-lucide="target" class="h-12 w-12 text-blue-600 mb-4"></i>
+            <h3 class="text-xl font-bold mb-4 text-gray-900">Nuestra Misión</h3>
+            <p class="text-gray-600">Promover el uso de energías limpias y renovables en todo el país.</p>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg p-8 card-hover">
+            <i data-lucide="heart" class="h-12 w-12 text-blue-600 mb-4"></i>
+            <h3 class="text-xl font-bold mb-4 text-gray-900">Nuestros Valores</h3>
+            <p class="text-gray-600">Compromiso, innovación, sostenibilidad y trabajo en equipo.</p>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg p-8 card-hover">
+            <i data-lucide="users" class="h-12 w-12 text-blue-600 mb-4"></i>
+            <h3 class="text-xl font-bold mb-4 text-gray-900">Nuestro Equipo</h3>
+            <p class="text-gray-600">Expertos apasionados por las energías renovables.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Novedades</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">Últimas noticias y actualizaciones de nuestros proyectos.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+            <div class="p-6">
+              <i data-lucide="wind" class="h-12 w-12 text-blue-600 mb-4"></i>
+              <h3 class="text-xl font-bold mb-4 text-gray-900">Nuevo proyecto eólico en La Guajira</h3>
+              <p class="text-gray-600 mb-4">Conoce los detalles del último parque eólico que se ha inaugurado en la región.</p>
+              <a href="#" class="text-blue-600 font-medium hover:underline flex items-center">
+                <span>Leer más</span>
+                <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+              </a>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+            <div class="p-6">
+              <i data-lucide="sun" class="h-12 w-12 text-blue-600 mb-4"></i>
+              <h3 class="text-xl font-bold mb-4 text-gray-900">Innovaciones en energía solar</h3>
+              <p class="text-gray-600 mb-4">Descubre las últimas tecnologías que están revolucionando la energía solar en Colombia.</p>
+              <a href="#" class="text-blue-600 font-medium hover:underline flex items-center">
+                <span>Leer más</span>
+                <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+              </a>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">
+            <div class="p-6">
+              <i data-lucide="droplets" class="h-12 w-12 text-blue-600 mb-4"></i>
+              <h3 class="text-xl font-bold mb-4 text-gray-900">Proyectos de pequeña hidroeléctrica</h3>
+              <p class="text-gray-600 mb-4">Conoce los avances en la implementación de centrales hidroeléctricas a pequeña escala.</p>
+              <a href="#" class="text-blue-600 font-medium hover:underline flex items-center">
+                <span>Leer más</span>
+                <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Contacto</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">¿Tienes alguna pregunta? Estamos aquí para ayudarte.</p>
+        </div>
+        <form class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+          <div class="mb-6">
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
+            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+              <i data-lucide="user" class="h-5 w-5 text-gray-400 ml-3"></i>
+              <input type="text" id="name" name="name" class="w-full py-3 px-3 focus:outline-none" required>
+            </div>
+          </div>
+          <div class="mb-6">
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+              <i data-lucide="mail" class="h-5 w-5 text-gray-400 ml-3"></i>
+              <input type="email" id="email" name="email" class="w-full py-3 px-3 focus:outline-none" required>
+            </div>
+          </div>
+          <div class="mb-6">
+            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Mensaje</label>
+            <div class="border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+              <textarea id="message" name="message" rows="4" class="w-full py-3 px-3 focus:outline-none" required></textarea>
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+            <i data-lucide="send" class="h-5 w-5 mr-2"></i>
+            <span>Enviar mensaje</span>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="gradient-bg text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <div class="flex items-center justify-center space-x-6 mb-4">
+        <a href="#" class="hover:text-blue-100"><i data-lucide="facebook" class="h-6 w-6"></i></a>
+        <a href="#" class="hover:text-blue-100"><i data-lucide="twitter" class="h-6 w-6"></i></a>
+        <a href="#" class="hover:text-blue-100"><i data-lucide="instagram" class="h-6 w-6"></i></a>
+        <a href="#" class="hover:text-blue-100"><i data-lucide="linkedin" class="h-6 w-6"></i></a>
+      </div>
+      <p>&copy; 2024 Energías Renovables en Colombia</p>
+    </div>
+  </footer>
+
+  <script>
+    // Inicializar los iconos de Lucide
+    lucide.createIcons();
+
+    // El código de D3.js y Chart.js permanece igual que en tu versión original
+    const capacityData = [
+      { department: 'Atlántico', capacity: 481 },
+      { department: 'Bolívar', capacity: 34 },
+      { department: 'Sucre', capacity: 70 },
+      { department: 'Córdoba', capacity: 232 },
+      { department: 'Antioquia', capacity: 3 },
+      { department: 'Risaralda', capacity: 5 },
+      { department: 'Valle del Cauca', capacity: 110 },
+      { department: 'Tolima', capacity: 150 },
+      { department: 'Huila', capacity: 6 },
+      { department: 'La Guajira', capacity: 32 },
+      { department: 'Magdalena', capacity: 120 },
+      { department: 'Cesar', capacity: 307 },
+      { department: 'Norte de Santander', capacity: 64 },
+      { department: 'Caldas', capacity: 185 },
+      { department: 'Cundinamarca', capacity: 50 },
+      { department: 'Meta', capacity: 141 }
+    ];
+
+    // Configuración del gráfico D3.js con estilo minimalista
+    const margin = { top: 30, right: 30, bottom: 90, left: 60 };
+    const width = window.innerWidth * 0.8 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    const svg = d3.select("#capacity-map")
+                  .append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                  .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand()
+                .domain(capacityData.map(d => d.department))
+                .range([0, width])
+                .padding(0.2);
+
+    const y = d3.scaleLinear()
+                .domain([0, d3.max(capacityData, d => d.capacity)])
+                .nice()
+                .range([height, 0]);
+
+    // Agregar líneas de guía horizontales
+    svg.append("g")
+       .attr("class", "grid")
+       .call(d3.axisLeft(y)
+         .tickSize(-width)
+         .tickFormat("")
+       )
+       .style("stroke-dasharray", "3,3")
+       .style("stroke-opacity", 0.2)
+       .select(".domain")
+       .remove();
+
+    // Barras con estilo moderno
+    svg.append("g")
+       .selectAll(".bar")
+       .data(capacityData)
+       .enter().append("rect")
+       .attr("class", "bar")
+       .attr("x", d => x(d.department))
+       .attr("y", d => y(d.capacity))
+       .attr("height", d => height - y(d.capacity))
+       .attr("width", x.bandwidth())
+       .attr("fill", "#3b82f6")
+       .attr("rx", 4)  // Bordes redondeados
+       .attr("ry", 4)
+       .style("transition", "all 0.3s ease")
+       .on("mouseover", function() {
+         d3.select(this)
+           .attr("fill", "#2563eb")
+           .attr("transform", "scale(1.02)");
+       })
+       .on("mouseout", function() {
+         d3.select(this)
+           .attr("fill", "#3b82f6")
+           .attr("transform", "scale(1)");
+       });
+
+    // Ejes con estilo minimalista
+    svg.append("g")
+       .attr("transform", `translate(0,${height})`)
+       .call(d3.axisBottom(x))
+       .selectAll("text")
+       .attr("transform", "rotate(-45)")
+       .style("text-anchor", "end")
+       .style("font-size", "12px")
+       .style("font-family", "Inter");
+
+    svg.append("g")
+       .call(d3.axisLeft(y).ticks(5))
+       .selectAll("text")
+       .style("font-size", "12px")
+       .style("font-family", "Inter");
+
+    // Título del eje Y
+    svg.append("text")
+       .attr("transform", "rotate(-90)")
+       .attr("y", 0 - margin.left)
+       .attr("x", 0 - (height / 2))
+       .attr("dy", "1em")
+       .style("text-anchor", "middle")
+       .style("font-family", "Inter")
+       .style("font-size", "14px")
+       .text("Capacidad (MW)");
+
+    // Gráfico de Chart.js con diseño moderno
+    const ctx = document.getElementById('energySavingsChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['2018', '2019', '2020', '2021', '2022'],
+        datasets: [
+          {
+            label: 'Solar',
+            data: [12000, 15000, 18000, 22000, 25000],
+            borderColor: '#f59e0b',
+            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3
+          },
+          {
+            label: 'Eólica',
+            data: [8000, 10000, 12000, 15000, 17000],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3
+          },
+          {
+            label: 'Hidráulica',
+            data: [15000, 17000, 19000, 23000, 26000],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              font: {
+                family: 'Inter',
+                size: 12
+              },
+              usePointStyle: true,
+              padding: 20
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+              drawBorder: false
+            },
+            ticks: {
+              font: {
+                family: 'Inter',
+                size: 12
+              },
+              callback: function(value) {
+                return value + ' MWh';
+              }
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              font: {
+                family: 'Inter',
+                size: 12
+              }
+            }
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
+        elements: {
+          point: {
+            radius: 0,
+            hoverRadius: 6
+          }
+        }
+      }
+    });
+
+    // Hacer que el gráfico de D3.js sea responsive
+    window.addEventListener('resize', () => {
+      const newWidth = window.innerWidth * 0.8 - margin.left - margin.right;
+      
+      svg.select("svg")
+         .attr("width", newWidth + margin.left + margin.right);
+      
+      x.range([0, newWidth]);
+      
+      svg.selectAll(".bar")
+         .attr("x", d => x(d.department))
+         .attr("width", x.bandwidth());
+      
+      svg.select(".grid")
+         .call(d3.axisLeft(y)
+           .tickSize(-newWidth)
+           .tickFormat("")
+         );
+      
+      svg.selectAll(".domain").remove();
+      
+      svg.select(".x-axis")
+         .attr("transform", `translate(0,${height})`)
+         .call(d3.axisBottom(x));
+    });
+  </script>
+</body>
+</html>
